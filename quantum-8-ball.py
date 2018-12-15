@@ -119,24 +119,30 @@ def main():
     print("simulation: ", result_sim)
     print(result_sim.get_counts(qc))
 
-    # # see a list of available remote backends
-    # ibmq_backends = IBMQ.backends()
-    #
-    # print("Remote backends: ", ibmq_backends)
-    # # Compile and run the Quantum Program on a real device backend
-    # try:
-    #     least_busy_device = least_busy(IBMQ.backends(simulator=False))
-    #     print("Running on current least busy device: ", least_busy_device)
-    #
-    #     #running the job
-    #     job_exp = execute(qc, least_busy_device, shots=1024, max_credits=10)
-    #     result_exp = job_exp.result()
-    #
-    #     # Show the results
-    #     print("experiment: ", result_exp)
-    #     print(result_exp.get_counts(qc))
-    # except:
-    #     print("All devices are currently unavailable.")
+    # see a list of available remote backends
+    ibmq_backends = IBMQ.backends()
+
+    print("Remote backends: ", ibmq_backends)
+    # Compile and run the Quantum Program on a real device backend
+    try:
+        least_busy_device = least_busy(IBMQ.backends(simulator=False))
+        print("Running on current least busy device: ", least_busy_device)
+
+        if least_busy_device == "ibmx4":
+            device_name = "IBM 5 qubit quantum computer in New York"
+        elif least_busy_device == "ibmq_16_melbourne":
+            device_name = "IBM 16 qubit quantum computer in Melbourne, Australia"
+
+        robot.say_text("Hold on. I'm going to ask an ", device_name, "to run the quentum program")
+        #running the job
+        job_exp = execute(qc, least_busy_device, shots=1024, max_credits=10)
+        result_exp = job_exp.result()
+
+        # Show the results
+        print("experiment: ", result_exp)
+        print(result_exp.get_counts(qc))
+    except:
+        print("All devices are currently unavailable.")
 
     # If necessary, move Vector's Head and Lift to make it easy to see his face
     robot.behavior.set_head_angle(degrees(45.0))
