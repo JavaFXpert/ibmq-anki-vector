@@ -100,8 +100,8 @@ def main():
                  For now, there's only access to local simulator backends...""")
 
     # set up Quantum Register and Classical Register for 3 qubits
-    q = QuantumRegister(3)
-    c = ClassicalRegister(3)
+    q = QuantumRegister(1)
+    c = ClassicalRegister(1)
     # Create a Quantum Circuit
     qc = QuantumCircuit(q, c)
     qc.h(q)
@@ -110,24 +110,10 @@ def main():
     def answer(result):
         for key in result.keys():
             state = key
-        # TODO: Remove next line
-        state = '010'
 
         print('The Quantum 8-ball says:')
         robot.say_text("The Quantum 8-ball says, ")
-        if state == '000':
-            image2screen("ket-000.png")
-            print('It is certain.')
-            robot.say_text("It is certain.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
-
-        elif state == '001':
-            image2screen("ket-001.png")
-            print('Without a doubt.')
-            robot.say_text("Without a doubt.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
-
-        elif state == '010':
+        if state == '1':
             image2screen("ket-010.png")
             print('Yes - definitely.')
             robot.say_text("Yes - definitely.")
@@ -141,38 +127,14 @@ def main():
 
             robot.behavior.drive_on_charger()
 
-        elif state == '011':
-            image2screen("ket-011.png")
-            print('Most likely.')
-            robot.say_text("Most likely.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
-
-        elif state == '100':
-            image2screen("ket-100.png")
-            print("Don't count on it.")
-            robot.say_text("Don't count on it.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
-
-        elif state == '101':
-            image2screen("ket-101.png")
+        elif state == '0':
+            image2screen("ket-110.png")
             print('My reply is no.')
             robot.say_text("My reply is no.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
-
-        elif state == '110':
-            image2screen("ket-110.png")
-            print('Very doubtful.')
-            robot.say_text("Very doubtful.")
             robot.behavior.set_head_angle(MIN_HEAD_ANGLE)
             robot.anim.play_animation('anim_eyepose_sad_down')
             robot.say_text("I guess I should just go back home")
             robot.behavior.drive_on_charger()
-
-        else:
-            image2screen("ket-111.png")
-            print('Concentrate and ask again.')
-            robot.say_text("Concentrate and ask again.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
 
     job = execute(qc, backend=Aer.get_backend('qasm_simulator'), shots=1)
     result = job.result().get_counts(qc)
