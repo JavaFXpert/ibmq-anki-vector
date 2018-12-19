@@ -75,7 +75,7 @@ def main():
         print("Begin cube docking...")
         dock_response = robot.behavior.dock_with_cube(
             robot.world.connected_light_cube,
-            num_retries=2)
+            num_retries=4)
         if dock_response:
             docking_result = dock_response.result
 
@@ -111,7 +111,7 @@ def main():
         for key in result.keys():
             state = key
         # TODO: Remove next line
-        state = '110'
+        state = '010'
 
         print('The Quantum 8-ball says:')
         robot.say_text("The Quantum 8-ball says, ")
@@ -131,7 +131,15 @@ def main():
             image2screen("ket-010.png")
             print('Yes - definitely.')
             robot.say_text("Yes - definitely.")
-            robot.anim.play_animation('anim_petting_bliss_getout_01')
+            robot.anim.play_animation('anim_eyepose_happy')
+            robot.anim.play_animation('anim_eyecontact_giggle_01_head_angle_20')
+            robot.anim.play_animation('anim_reacttocliff_edge_01')
+            robot.say_text('Fist bump!')
+            robot.anim.play_animation('anim_fistbump_requestoncelong_01')
+            robot.say_text('Later! Gotta go find my true love!')
+            robot.behavior.set_lift_height(0.0)
+
+            robot.behavior.drive_on_charger()
 
         elif state == '011':
             image2screen("ket-011.png")
