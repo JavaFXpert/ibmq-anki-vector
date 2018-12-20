@@ -33,10 +33,6 @@ def main():
     # Connect to the Robot
     robot.connect()
 
-    # def event_listener(name, msg):
-    #     print(name)  # will print 'my_event'
-    #     print(msg)  # will print 'my_event dispatched'
-
     def image2screen(image_file_name):
         current_directory = os.path.dirname(os.path.realpath(__file__))
         image_path = os.path.join(current_directory, "images", image_file_name)
@@ -52,14 +48,8 @@ def main():
         robot.conn.request_control()
         robot.screen.set_screen_with_image_data(screen_data, 10.0, interrupt_running=True)
         robot.behavior.set_head_angle(MAX_HEAD_ANGLE)
-        # robot.screen.set_screen_with_image_data(screen_data, 4.0)
         time.sleep(3)
         robot.behavior.set_head_angle(Angle(0.0))
-
-    print("List all animation names:")
-    anim_names = robot.anim.anim_list
-    for anim_name in anim_names:
-        print(anim_name)
 
     robot.world.disconnect_cube()
     robot.behavior.drive_off_charger()
@@ -89,9 +79,6 @@ def main():
 
         robot.world.disconnect_cube()
 
-    # robot.anim.play_animation('anim_feedback_iloveyou_02')
-    # robot.anim.play_animation('anim_dancebeat_scoot_right_01')
-
     # Authenticate for access to remote backends
     try:
         IBMQ.load_accounts()
@@ -100,10 +87,11 @@ def main():
                  Have you initialized a file with your personal token?
                  For now, there's only access to local simulator backends...""")
 
-    # set up Quantum Register and Classical Register for 3 qubits
+    # Set up quantum register and classical register for 1 qubit
     q = QuantumRegister(1)
     c = ClassicalRegister(1)
-    # Create a Quantum Circuit
+
+    # Create a quantum circuit
     qc = QuantumCircuit(q, c)
     qc.h(q)
     qc.measure(q, c)
@@ -137,50 +125,16 @@ def main():
             robot.say_text("I guess I should just go back home")
             robot.behavior.drive_on_charger()
 
+    # Run the circuit on an IBM quantum simulator
+    # Note: To run circuits on an IBM quantum computer, see instructions
+    #       in the Jupyter notebook of the following Qiskit tutorial:
+    # https://github.com/Qiskit/qiskit-tutorials/blob/master/qiskit/basics/getting_started_with_qiskit_terra.ipynb
     job = execute(qc, backend=Aer.get_backend('qasm_simulator'), shots=1)
     result = job.result().get_counts(qc)
     answer(result)
 
-    # See a list of available local simulators
-    print("Aer backends: ", Aer.backends())
-    backend_sim = Aer.get_backend('qasm_simulator')
-
-    # Compile and run the Quantum circuit on a simulator backend
-    job_sim = execute(qc, backend_sim)
-    result_sim = job_sim.result()
-
     # Show the results
-    print("simulation: ", result_sim)
-    print(result_sim.get_counts(qc))
-
-    # # see a list of available remote backends
-    # ibmq_backends = IBMQ.backends()
-    #
-    # print("Remote backends: ", ibmq_backends)
-    # # Compile and run the Quantum Program on a real device backend
-    # try:
-    #     least_busy_device = least_busy(IBMQ.backends(simulator=False))
-    #     print("Running on current least busy device: ", least_busy_device)
-    #
-    #     if least_busy_device == "ibmx4":
-    #         device_name = "IBM 5 qubit quantum computer in New York"
-    #     elif least_busy_device == "ibmq_16_melbourne":
-    #         device_name = "IBM 16 qubit quantum computer in Melbourne, Australia"
-    #
-    #     robot.say_text("Hold on. I'm going to ask an ", device_name, "to run the quentum program")
-    #     #running the job
-    #     job_exp = execute(qc, least_busy_device, shots=1024, max_credits=10)
-    #     result_exp = job_exp.result()
-    #
-    #     # Show the results
-    #     print("experiment: ", result_exp)
-    #     print(result_exp.get_counts(qc))
-    # except:
-    #     print("All devices are currently unavailable.")
-
-    # If necessary, move Vector's Head and Lift to make it easy to see his face
-    # robot.behavior.set_head_angle(degrees(45.0))
-    # robot.behavior.set_lift_height(0.0)
+    print("result: ", result)
 
     # Disconnect from Vector
     robot.disconnect()
