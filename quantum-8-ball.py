@@ -69,9 +69,10 @@ def main():
     print("Connecting to a cube...")
     robot.world.connect_cube()
 
+    robot.say_text("I got it! I'll ask a quantum eight ball on an IBM quantum computer.")
+    image2screen("qiskit-logo.png")
+
     if robot.world.connected_light_cube:
-        robot.say_text("I got it! I'll ask a quantum eight ball on an IBM quantum computer.")
-        image2screen("qiskit-logo.png")
         print("Begin cube docking...")
         dock_response = robot.behavior.dock_with_cube(
             robot.world.connected_light_cube,
@@ -114,7 +115,7 @@ def main():
         print('The Quantum 8-ball says:')
         robot.say_text("The Quantum 8-ball says, ")
         if state == '1':
-            image2screen("ket-010.png")
+            image2screen("ket-1.png")
             print('Yes - definitely.')
             robot.say_text("Yes - definitely.")
             robot.anim.play_animation('anim_eyepose_happy')
@@ -128,7 +129,7 @@ def main():
             robot.behavior.drive_on_charger()
 
         elif state == '0':
-            image2screen("ket-110.png")
+            image2screen("ket-0.png")
             print('My reply is no.')
             robot.say_text("My reply is no.")
             robot.behavior.set_head_angle(MIN_HEAD_ANGLE)
