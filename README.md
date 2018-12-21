@@ -1,5 +1,5 @@
 # IBM Q quantum computers and Anki Vector
-An experiment with an Anki Vector robot leveraging IBM Q quantum computers
+An experiment with an Anki Vector robot leveraging IBM Q quantum computers.
 See Medium article entitled [A Robot and a Quantum Computer](https://medium.com/@JavaFXpert/a-robot-and-a-quantum-computer-41d6c778a5bf) for more explanation and video demonstrations
 ## Installation
 
